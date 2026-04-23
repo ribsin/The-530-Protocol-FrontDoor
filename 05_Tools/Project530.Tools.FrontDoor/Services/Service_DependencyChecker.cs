@@ -15,7 +15,9 @@ public class Service_DependencyChecker
         "libatk-bridge2.0-0",
         "libx11-xcb1",
         "libxcb-util1",
-        "libxcb-cursor0"
+        "libxcb-cursor0",
+        "libskia-sharp",
+        "libskia-sharp-data"
     };
 
     /// <summary>

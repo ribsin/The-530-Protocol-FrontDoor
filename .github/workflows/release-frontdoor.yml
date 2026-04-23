@@ -27,24 +27,18 @@ jobs:
         run: dotnet publish 05_Tools/Project530.Tools.FrontDoor/Project530.Tools.FrontDoor.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./publish/win
 
       - name: Build Linux x64
-        run: dotnet publish 05_Tools/Project530.Tools.FrontDoor/Project530.Tools.FrontDoor.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -o ./publish/linux
+        run: dotnet publish 05_Tools/Project530.Tools.FrontDoor/Project530.Tools.FrontDoor.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=false -p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/linux
 
       - name: Build macOS x64
-        run: dotnet publish 05_Tools/Project530.Tools.FrontDoor/Project530.Tools.FrontDoor.csproj -c Release -r osx-x64 --self-contained true -p:PublishSingleFile=true -o ./publish/mac
-
-      - name: Normalize release asset names
-        run: |
-          cp publish/win/frontdoor.exe publish/frontdoor-win-x64.exe
-          cp publish/linux/frontdoor publish/frontdoor-linux-x64
-          cp publish/mac/frontdoor publish/frontdoor-osx-x64
+        run: dotnet publish 05_Tools/Project530.Tools.FrontDoor/Project530.Tools.FrontDoor.csproj -c Release -r osx-x64 --self-contained true -p:PublishSingleFile=false -p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/mac
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            publish/frontdoor-win-x64.exe
-            publish/frontdoor-linux-x64
-            publish/frontdoor-osx-x64
+            publish/win/frontdoor.exe
+            publish/linux/frontdoor
+            publish/mac/frontdoor
           generate_release_notes: true
           draft: false
           prerelease: false
