@@ -1,0 +1,59 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Project530.Tools.FrontDoor.ViewModels"
+             x:Class="Project530.Tools.FrontDoor.Views.LiveMonitorView"
+             x:DataType="vm:ViewModel_LiveMonitor"
+             Background="{StaticResource FD_BgVoid}">
+
+  <DockPanel>
+
+    <!-- Top bar -->
+    <Border DockPanel.Dock="Top"
+            Background="{StaticResource FD_BgPanel}"
+            Padding="12,8">
+      <StackPanel Orientation="Horizontal" Spacing="16">
+        <TextBlock Text="Five30 Live Monitor"
+                   FontWeight="Bold" FontSize="16"
+                   Foreground="{StaticResource FD_AccentPrimary}"
+                   VerticalAlignment="Center" />
+        <TextBlock Text="{Binding HealthStatus}"
+                   FontSize="12"
+                   Foreground="{StaticResource FD_AccentSuccess}"
+                   VerticalAlignment="Center" />
+      </StackPanel>
+    </Border>
+
+    <!-- Tab strip -->
+    <Border DockPanel.Dock="Top"
+            Background="{StaticResource FD_BgPanel}"
+            BorderThickness="0,0,0,1"
+            BorderBrush="{StaticResource FD_Border}"
+            Padding="4,0">
+      <StackPanel Orientation="Horizontal" Spacing="4">
+        <Button Content="Live Ops"
+                Background="Transparent" Foreground="{StaticResource FD_TextPrimary}" />
+        <Button Content="Workforce"
+                Background="Transparent" Foreground="{StaticResource FD_TextPrimary}" />
+        <Button Content="Brain Pool"
+                Background="Transparent" Foreground="{StaticResource FD_TextPrimary}" />
+      </StackPanel>
+    </Border>
+
+    <!-- Log panel -->
+    <Border Background="{StaticResource FD_BgCard}"
+            CornerRadius="4" Margin="8" Padding="8">
+      <ScrollViewer>
+        <ItemsControl ItemsSource="{Binding LogLines}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding}" FontSize="11" FontFamily="Consolas,Courier New"
+                         Foreground="{StaticResource FD_TextMuted}" />
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </ScrollViewer>
+    </Border>
+
+  </DockPanel>
+
+</UserControl>

@@ -1,0 +1,26 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Project530.Tools.FrontDoor.App"
+             RequestedThemeVariant="Dark">
+
+  <Application.Styles>
+    <FluentTheme />
+  </Application.Styles>
+
+  <Application.Resources>
+    <!-- ── Command Deck Palette ──────────────────────────────── -->
+    <SolidColorBrush x:Key="FD_BgVoid"        Color="#0a0e17"/>
+    <SolidColorBrush x:Key="FD_BgPanel"       Color="#111827"/>
+    <SolidColorBrush x:Key="FD_BgCard"        Color="#1e2435"/>
+    <SolidColorBrush x:Key="FD_AccentPrimary" Color="#3b82f6"/>
+    <SolidColorBrush x:Key="FD_AccentHover"   Color="#60a5fa"/>
+    <SolidColorBrush x:Key="FD_AccentSuccess" Color="#22c55e"/>
+    <SolidColorBrush x:Key="FD_AccentWarning" Color="#f59e0b"/>
+    <SolidColorBrush x:Key="FD_AccentDanger"  Color="#ef4444"/>
+    <SolidColorBrush x:Key="FD_TextPrimary"   Color="#e2e8f0"/>
+    <SolidColorBrush x:Key="FD_TextMuted"     Color="#64748b"/>
+    <SolidColorBrush x:Key="FD_Border"        Color="#1e2d47"/>
+    <!-- ────────────────────────────────────────────────────── -->
+  </Application.Resources>
+
+</Application>

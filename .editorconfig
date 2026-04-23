@@ -1,0 +1,42 @@
+root = true
+
+[*.{cs,vb}]
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.cs]
+# Prefer file-scoped namespaces
+dotnet_style_prefer_file_scoped_namespace = true:warning
+
+# Naming conventions: interfaces must start with I
+dotnet_naming_symbols.interfaces.applicable_kinds = interface
+dotnet_naming_symbols.interfaces.applicable_accessibilities = *
+dotnet_naming_style.prefix_I.required_prefix = I
+dotnet_naming_style.prefix_I.capitalization = pascal_case
+dotnet_naming_rule.interfaces_should_begin_with_I.symbols = interfaces
+dotnet_naming_rule.interfaces_should_begin_with_I.style = prefix_I
+dotnet_naming_rule.interfaces_should_begin_with_I.severity = warning
+
+# [530-SECURITY-HARDENING]
+# Banned APIs (Steel-Check)
+dotnet_diagnostic.RS0030.severity = error
+
+# Prefer explicit required properties on record types (enforced by analyzer rules)
+# Implement using Roslyn analyzers in Project530.Security.SteelCheck.
+
+# Guidance: Use primary constructors for DI classes where appropriate.
+# Note: primary constructor enforcement is not a built-in editorconfig option; use Roslyn analyzers or code reviews.
+
+# Style preferences
+csharp_style_var_elsewhere = true:suggestion
+csharp_style_throw_expression = true:suggestion
+
+[*.{cs}]
+# Treat analyzer diagnostics as warnings by default; adjust per-project ruleset for stricter enforcement.
+dotnet_analyzer_diagnostic.severity = suggestion
+
+# Enforce file header presence (used with StyleCop.Analyzers)
+dotnet_diagnostic.SA1633.severity = error
+file_header_template = // [530-PROVENANCE]

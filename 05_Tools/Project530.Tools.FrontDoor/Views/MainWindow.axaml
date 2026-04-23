@@ -1,0 +1,18 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="using:Project530.Tools.FrontDoor.Views"
+        x:Class="Project530.Tools.FrontDoor.Views.MainWindow"
+        Title="Five30 Front Door"
+        Width="960" Height="620"
+        MinWidth="800" MinHeight="520"
+        Background="{StaticResource FD_BgVoid}"
+        ExtendClientAreaToDecorationsHint="True">
+
+  <Grid>
+    <!-- Setup Wizard mode -->
+    <views:SetupWizardView x:Name="WizardView" />
+    <!-- Live Monitor mode — hidden until install completes -->
+    <views:LiveMonitorView x:Name="MonitorView" IsVisible="False" />
+  </Grid>
+
+</Window>

@@ -1,0 +1,44 @@
+name: Release Front Door
+# [530-PROVENANCE]
+# AGENT_ID: Cline-Agent003-DesignBay | LAST-MODIFIED: 2026-04-23
+
+on:
+  push:
+    tags:
+      - 'frontdoor-v*'
+
+jobs:
+  release-frontdoor:
+    name: Build & Publish Front Door Binary
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 9.0
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Build Windows x64
+        run: dotnet publish 05_Tools/Project530.Tools.FrontDoor/Project530.Tools.FrontDoor.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./publish/win
+
+      - name: Build Linux x64
+        run: dotnet publish 05_Tools/Project530.Tools.FrontDoor/Project530.Tools.FrontDoor.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -o ./publish/linux
+
+      - name: Build macOS x64
+        run: dotnet publish 05_Tools/Project530.Tools.FrontDoor/Project530.Tools.FrontDoor.csproj -c Release -r osx-x64 --self-contained true -p:PublishSingleFile=true -o ./publish/mac
+
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            publish/win/frontdoor.exe
+            publish/linux/frontdoor
+            publish/mac/frontdoor
+          generate_release_notes: true
+          draft: false
+          prerelease: false

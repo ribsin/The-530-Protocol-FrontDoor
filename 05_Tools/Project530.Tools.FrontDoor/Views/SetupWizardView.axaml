@@ -1,0 +1,107 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Project530.Tools.FrontDoor.ViewModels"
+             x:Class="Project530.Tools.FrontDoor.Views.SetupWizardView"
+             x:DataType="vm:ViewModel_SetupWizard"
+             Background="{StaticResource FD_BgVoid}">
+
+  <ScrollViewer>
+    <StackPanel Margin="40" Spacing="16">
+
+      <!-- Header -->
+      <TextBlock Text="Five30 Front Door"
+                 FontSize="28" FontWeight="Bold"
+                 Foreground="{StaticResource FD_AccentPrimary}" />
+      <TextBlock Text="Factory Setup Wizard"
+                 FontSize="14"
+                 Foreground="{StaticResource FD_TextMuted}" />
+
+      <Separator />
+
+      <!-- Step indicator -->
+      <StackPanel Orientation="Horizontal" Spacing="4">
+        <TextBlock Text="Step " FontSize="12" Foreground="{StaticResource FD_TextMuted}" />
+        <TextBlock Text="{Binding CurrentStep}" FontSize="12" Foreground="{StaticResource FD_TextMuted}" />
+        <TextBlock Text=" of 6" FontSize="12" Foreground="{StaticResource FD_TextMuted}" />
+      </StackPanel>
+      <ProgressBar Value="{Binding ProgressPercent}" Maximum="100"
+                   Height="8" Foreground="{StaticResource FD_AccentPrimary}" />
+
+      <!-- Git credentials -->
+      <Border Background="{StaticResource FD_BgCard}"
+              CornerRadius="6" Padding="16">
+        <StackPanel Spacing="10">
+          <TextBlock Text="GitHub Credentials"
+                     FontWeight="SemiBold"
+                     Foreground="{StaticResource FD_TextPrimary}" />
+          <TextBox Watermark="GitHub username"
+                   Text="{Binding Username, Mode=TwoWay}"
+                   Foreground="{StaticResource FD_TextPrimary}" />
+          <TextBox Watermark="Personal access token"
+                   PasswordChar="&#x2022;"
+                   Text="{Binding Password, Mode=TwoWay}"
+                   Foreground="{StaticResource FD_TextPrimary}" />
+        </StackPanel>
+      </Border>
+
+      <!-- Vault keys -->
+      <Border Background="{StaticResource FD_BgCard}"
+              CornerRadius="6" Padding="16">
+        <StackPanel Spacing="10">
+          <TextBlock Text="Vault Keys"
+                     FontWeight="SemiBold"
+                     Foreground="{StaticResource FD_TextPrimary}" />
+          <TextBox Watermark="Vault API key"
+                   Text="{Binding VaultApiKey, Mode=TwoWay}"
+                   Foreground="{StaticResource FD_TextPrimary}" />
+          <TextBox Watermark="Database password"
+                   PasswordChar="&#x2022;"
+                   Text="{Binding DatabasePassword, Mode=TwoWay}"
+                   Foreground="{StaticResource FD_TextPrimary}" />
+        </StackPanel>
+      </Border>
+
+      <!-- Target directory -->
+      <Border Background="{StaticResource FD_BgCard}"
+              CornerRadius="6" Padding="16">
+        <StackPanel Spacing="10">
+          <TextBlock Text="Installation Directory"
+                     FontWeight="SemiBold"
+                     Foreground="{StaticResource FD_TextPrimary}" />
+          <TextBox Text="{Binding TargetDirectory, Mode=TwoWay}"
+                   Foreground="{StaticResource FD_TextPrimary}" />
+        </StackPanel>
+      </Border>
+
+      <!-- Status -->
+      <TextBlock Text="{Binding StatusMessage}"
+                 TextWrapping="Wrap"
+                 Foreground="{StaticResource FD_TextPrimary}" />
+
+      <!-- Log -->
+      <Border Background="{StaticResource FD_BgCard}"
+              CornerRadius="4" Padding="8">
+        <ScrollViewer MaxHeight="120">
+          <ItemsControl ItemsSource="{Binding LogLines}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding}" FontSize="11"
+                           Foreground="{StaticResource FD_TextMuted}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+      </Border>
+
+      <!-- Install button -->
+      <Button Content="Begin Installation"
+              Command="{Binding BeginInstallCommand}"
+              HorizontalAlignment="Right"
+              Background="{StaticResource FD_AccentPrimary}"
+              Foreground="{StaticResource FD_TextPrimary}"
+              Padding="16,8" />
+
+    </StackPanel>
+  </ScrollViewer>
+
+</UserControl>

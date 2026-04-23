@@ -1,0 +1,16 @@
+// [530-PROVENANCE]
+/* **************************************************************************
+ * PROJECT: 5:30 Protocol | COMPLIANCE: 2026.AI-ACT.ARTICLE-50
+ * PROVENANCE: HUMAN-REFINED
+ * AGENT_ID: Gemini-Code-Assist-v1
+ * SECURITY_STATUS: STEEL-CHECK-PENDING
+ * ************************************************************************** */
+
+// Banned namespaces for Core projects
+N:Sandbox
+N:VRAGE
+N:SpaceEngineers
+T:System.IO.File
+N:System.IO
+N:System.Net
+N:System.Reflection

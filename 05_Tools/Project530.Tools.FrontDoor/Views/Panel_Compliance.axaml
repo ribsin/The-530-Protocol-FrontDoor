@@ -1,0 +1,95 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Project530.Tools.FrontDoor.ViewModels"
+             x:Class="Project530.Tools.FrontDoor.Views.Panel_Compliance"
+             x:DataType="vm:ViewModel_LiveMonitor"
+             Background="{StaticResource FD_BgVoid}">
+
+    <DockPanel Margin="8">
+        <!-- Header -->
+        <Border DockPanel.Dock="Top"
+                Background="{StaticResource FD_BgPanel}"
+                Padding="12,8"
+                BorderThickness="0,0,0,1"
+                BorderBrush="{StaticResource FD_AccentPrimary}">
+            <StackPanel Orientation="Horizontal" Spacing="12">
+                <TextBlock Text="Compliance Center"
+                           FontWeight="Bold"
+                           FontSize="14"
+                           Foreground="{StaticResource FD_AccentPrimary}" />
+                <TextBlock Text="Score"
+                           Foreground="{StaticResource FD_TextMuted}"
+                           VerticalAlignment="Center" />
+                <TextBlock Text="96.8/100"
+                           FontWeight="SemiBold"
+                           Foreground="{StaticResource FD_AccentSuccess}"
+                           VerticalAlignment="Center" />
+            </StackPanel>
+        </Border>
+
+        <!-- Compliance Cards -->
+        <ScrollViewer Padding="0,8,0,0">
+            <WrapPanel>
+
+                <!-- Law 10: Line Limits -->
+                <Border Width="190"
+                        Background="{StaticResource FD_BgCard}"
+                        BorderBrush="{StaticResource FD_AccentSuccess}"
+                        BorderThickness="1"
+                        Padding="12">
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Law #10" FontWeight="SemiBold" Foreground="{StaticResource FD_TextPrimary}" />
+                        <ProgressBar Value="100" Height="4" Foreground="{StaticResource FD_AccentSuccess}" />
+                        <TextBlock Text="Line Limits" FontSize="10" Foreground="{StaticResource FD_TextMuted}" />
+                        <TextBlock Text="✅ 0 Violations" FontSize="11" Foreground="{StaticResource FD_AccentSuccess}" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Law 3: Naming -->
+                <Border Width="190"
+                        Background="{StaticResource FD_BgCard}"
+                        BorderBrush="{StaticResource FD_AccentWarning}"
+                        BorderThickness="1"
+                        Padding="12">
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Law #3" FontWeight="SemiBold" Foreground="{StaticResource FD_TextPrimary}" />
+                        <ProgressBar Value="71" Height="4" Foreground="{StaticResource FD_AccentWarning}" />
+                        <TextBlock Text="Naming Compliance" FontSize="10" Foreground="{StaticResource FD_TextMuted}" />
+                        <TextBlock Text="⚠️  39 Violations" FontSize="11" Foreground="{StaticResource FD_AccentWarning}" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Law 5: Dependency -->
+                <Border Width="190"
+                        Background="{StaticResource FD_BgCard}"
+                        BorderBrush="{StaticResource FD_AccentSuccess}"
+                        BorderThickness="1"
+                        Padding="12">
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Law #5" FontWeight="SemiBold" Foreground="{StaticResource FD_TextPrimary}" />
+                        <ProgressBar Value="100" Height="4" Foreground="{StaticResource FD_AccentSuccess}" />
+                        <TextBlock Text="Dependency Isolation" FontSize="10" Foreground="{StaticResource FD_TextMuted}" />
+                        <TextBlock Text="✅ 0 Violations" FontSize="11" Foreground="{StaticResource FD_AccentSuccess}" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Law 7: Comments -->
+                <Border Width="190"
+                        Background="{StaticResource FD_BgCard}"
+                        BorderBrush="{StaticResource FD_AccentSuccess}"
+                        BorderThickness="1"
+                        Padding="12">
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Law #7" FontWeight="SemiBold" Foreground="{StaticResource FD_TextPrimary}" />
+                        <ProgressBar Value="100" Height="4" Foreground="{StaticResource FD_AccentSuccess}" />
+                        <TextBlock Text="Comment Ratio" FontSize="10" Foreground="{StaticResource FD_TextMuted}" />
+                        <TextBlock Text="✅ 1.2:1 Ratio" FontSize="11" Foreground="{StaticResource FD_AccentSuccess}" />
+                    </StackPanel>
+                </Border>
+
+            </WrapPanel>
+        </ScrollViewer>
+
+    </DockPanel>
+
+</UserControl>

@@ -1,0 +1,103 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Project530.Tools.FrontDoor.ViewModels"
+             x:Class="Project530.Tools.FrontDoor.Views.Panel_Infrastructure"
+             x:DataType="vm:ViewModel_LiveMonitor"
+             Background="{StaticResource FD_BgVoid}">
+
+    <DockPanel Margin="8">
+        <!-- Header -->
+        <Border DockPanel.Dock="Top"
+                Background="{StaticResource FD_BgPanel}"
+                Padding="12,8"
+                BorderThickness="0,0,0,1"
+                BorderBrush="{StaticResource FD_AccentPrimary}">
+            <StackPanel Orientation="Horizontal" Spacing="12">
+                <TextBlock Text="Infrastructure"
+                           FontWeight="Bold"
+                           FontSize="14"
+                           Foreground="{StaticResource FD_AccentPrimary}" />
+            </StackPanel>
+        </Border>
+
+        <!-- Infrastructure Cards -->
+        <ScrollViewer Padding="0,8,0,0">
+            <StackPanel Spacing="8">
+
+                <!-- Host Metrics -->
+                <Border Background="{StaticResource FD_BgCard}"
+                        BorderBrush="{StaticResource FD_AccentPrimary}"
+                        BorderThickness="1"
+                        Padding="12">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Host Metrics" FontWeight="SemiBold" Foreground="{StaticResource FD_TextPrimary}" />
+                        <Grid ColumnDefinitions="*,*,*,*" RowDefinitions="Auto,Auto">
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="CPU" FontSize="10" Foreground="{StaticResource FD_TextMuted}" />
+                            <ProgressBar Grid.Row="1" Grid.Column="0" Value="27" Height="6" Foreground="{StaticResource FD_AccentSuccess}" />
+
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="Memory" FontSize="10" Foreground="{StaticResource FD_TextMuted}" />
+                            <ProgressBar Grid.Row="1" Grid.Column="1" Value="62" Height="6" Foreground="{StaticResource FD_AccentPrimary}" />
+
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Disk" FontSize="10" Foreground="{StaticResource FD_TextMuted}" />
+                            <ProgressBar Grid.Row="1" Grid.Column="2" Value="38" Height="6" Foreground="{StaticResource FD_AccentSuccess}" />
+
+                            <TextBlock Grid.Row="0" Grid.Column="3" Text="Network" FontSize="10" Foreground="{StaticResource FD_TextMuted}" />
+                            <ProgressBar Grid.Row="1" Grid.Column="3" Value="12" Height="6" Foreground="{StaticResource FD_AccentSuccess}" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Docker Containers -->
+                <Border Background="{StaticResource FD_BgCard}"
+                        BorderBrush="{StaticResource FD_AccentPrimary}"
+                        BorderThickness="1"
+                        Padding="12">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Docker Containers" FontWeight="SemiBold" Foreground="{StaticResource FD_TextPrimary}" />
+
+                        <Grid ColumnDefinitions="*,Auto,Auto" RowDefinitions="Auto,Auto,Auto">
+                            <TextBlock Grid.Column="0" Text="postgres" Foreground="{StaticResource FD_TextPrimary}" />
+                            <TextBlock Grid.Column="1" Text="✅" FontSize="12" />
+                            <TextBlock Grid.Column="2" Text="1.1GB" FontSize="10" Foreground="{StaticResource FD_TextMuted}" />
+
+                            <TextBlock Grid.Column="0" Text="redis" Foreground="{StaticResource FD_TextPrimary}" />
+                            <TextBlock Grid.Column="1" Text="✅" FontSize="12" />
+                            <TextBlock Grid.Column="2" Text="128MB" FontSize="10" Foreground="{StaticResource FD_TextMuted}" />
+
+                            <TextBlock Grid.Column="0" Text="backend" Foreground="{StaticResource FD_TextPrimary}" />
+                            <TextBlock Grid.Column="1" Text="✅" FontSize="12" />
+                            <TextBlock Grid.Column="2" Text="842MB" FontSize="10" Foreground="{StaticResource FD_TextMuted}" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Services -->
+                <Border Background="{StaticResource FD_BgCard}"
+                        BorderBrush="{StaticResource FD_AccentPrimary}"
+                        BorderThickness="1"
+                        Padding="12">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Services" FontWeight="SemiBold" Foreground="{StaticResource FD_TextPrimary}" />
+
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto,Auto">
+                            <TextBlock Grid.Column="0" Text="API Gateway" Foreground="{StaticResource FD_TextPrimary}" />
+                            <TextBlock Grid.Column="1" Text="✅ Healthy" Foreground="{StaticResource FD_AccentSuccess}" FontSize="11" />
+
+                            <TextBlock Grid.Column="0" Text="SignalR Hub" Foreground="{StaticResource FD_TextPrimary}" />
+                            <TextBlock Grid.Column="1" Text="✅ 2 Active" Foreground="{StaticResource FD_AccentSuccess}" FontSize="11" />
+
+                            <TextBlock Grid.Column="0" Text="Database Pool" Foreground="{StaticResource FD_TextPrimary}" />
+                            <TextBlock Grid.Column="1" Text="✅ 8/10" Foreground="{StaticResource FD_AccentSuccess}" FontSize="11" />
+
+                            <TextBlock Grid.Column="0" Text="Redis Cache" Foreground="{StaticResource FD_TextPrimary}" />
+                            <TextBlock Grid.Column="1" Text="✅ 2.7%" Foreground="{StaticResource FD_AccentSuccess}" FontSize="11" />
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+    </DockPanel>
+
+</UserControl>

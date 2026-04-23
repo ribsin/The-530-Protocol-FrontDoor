@@ -1,0 +1,27 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Authors>530-Protocol-Team</Authors>
+    <Nullable>enable</Nullable>
+    <LangVersion>13.0</LangVersion>
+    <EnablePreviewFeatures>true</EnablePreviewFeatures>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    
+    <!-- Prevent background compiler nodes from locking .dll files during dotnet watch -->
+    <UseSharedCompilation>false</UseSharedCompilation>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.BannedApiAnalyzers" Version="3.3.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)BannedSymbols.txt" Link="BannedSymbols.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Enforce file headers and code style via StyleCop analyzers across all projects -->
+    <!-- <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435" PrivateAssets="all" /> -->
+  </ItemGroup>
+</Project>
