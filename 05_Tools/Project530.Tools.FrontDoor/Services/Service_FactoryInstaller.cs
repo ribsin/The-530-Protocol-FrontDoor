@@ -20,7 +20,7 @@ namespace Project530.Tools.FrontDoor.Services;
 public sealed class Service_FactoryInstaller : I_FactoryInstaller
 {
     private const string RepoUrl = "https://github.com/ribsin/The-530-Protocol.git";
-    private const string Branch = "live";
+    private const string Branch = "main";
     private const string BackendHealthUrl = "http://localhost:5000";
 
     private readonly I_ProcessRunner _runner;
