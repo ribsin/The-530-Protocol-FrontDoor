@@ -16,15 +16,26 @@ https://github.com/ribsin/The-530-Protocol-FrontDoor/releases
 
 ## Headless / Server Mode
 
-Front Door automatically switches to headless mode when no display is detected
-(e.g. SSH sessions, tmux, WSL without X11).
+Front Door **automatically** switches to headless terminal mode when no display is
+detected (e.g. double-click on a headless Ubuntu server, SSH sessions, tmux, WSL
+without X11).  No flags required.
+
+### Behaviour by invocation
+
+| How to run | Result |
+|------------|--------|
+| Double-click binary (no display) | Auto-detects → terminal REPL |
+| `./frontdoor` via SSH | Auto-detects → terminal REPL |
+| `./frontdoor --headless` or `-s` | Forces headless REPL |
+| `./frontdoor --gui` or `-g` | Forces GUI mode (fails gracefully on headless) |
+| `./frontdoor` with a display | Opens Avalonia GUI |
+| `./frontdoor server <cmd>` | Single command, exits |
 
 ### Interactive terminal REPL
 
 ```bash
+./frontdoor-linux-x64          # auto-detect on headless machine
 ./frontdoor-linux-x64 --headless
-# or
-./frontdoor-linux-x64 -s
 ```
 
 Launches an interactive `five30>` prompt with the following commands:
