@@ -48,6 +48,22 @@ if (headlessFlag || autoHeadless)
     return;
 }
 
+// ── Dependency Check (Linux only) ─────────────────────────────────────────────
+// Check for GTK3/X11 dependencies before attempting GUI launch
+if (!HeadlessDetector.IsHeadlessEnvironment())
+{
+    var depChecker = new Service_DependencyChecker();
+    depChecker.ShowDependencyPrompt();
+    
+    // If user chose headless mode, run that instead
+    if (Environment.GetEnvironmentVariable("FIVE30_HEADLESS_MODE") == "1")
+    {
+        var svc = Service_HeadlessMode.CreateDefault();
+        await svc.RunInteractiveAsync(CancellationToken.None);
+        return;
+    }
+}
+
 // ── GUI mode (Avalonia) ───────────────────────────────────────────────────────
 // If --gui was passed on a machine with no display, report clearly and exit.
 if (forceGui && HeadlessDetector.IsHeadlessEnvironment())
