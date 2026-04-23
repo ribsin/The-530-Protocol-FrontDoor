@@ -15,6 +15,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.AspNetCore.SignalR.Client;
 using Project530.Core.Common.Models;
+using Project530.Tools.FrontDoor.Models;
 
 namespace Project530.Tools.FrontDoor.ViewModels;
 
@@ -32,6 +33,14 @@ public sealed partial class ViewModel_LiveMonitor : ViewModel_Base, IAsyncDispos
     [ObservableProperty] private string _healthStatus = "connecting";
     [ObservableProperty] private int _tokenBalance = 0;
     [ObservableProperty] private double _msgPerSec = 0;
+    
+    // Dashboard stats
+    [ObservableProperty] private int _userCount = 0;
+    [ObservableProperty] private int _profileCount = 0;
+    [ObservableProperty] private int _modCount = 0;
+    [ObservableProperty] private int _modPackCount = 0;
+    [ObservableProperty] private int _gameRequestCount = 0;
+    [ObservableProperty] private int _testerResultCount = 0;
 
     public ObservableCollection<string> LogLines { get; } = new();
     public ObservableCollection<Object_WorkPlanDto> Plans { get; } = new();
@@ -87,6 +96,15 @@ public sealed partial class ViewModel_LiveMonitor : ViewModel_Base, IAsyncDispos
             items => { Roster.Clear(); foreach (var a in items) Roster.Add(a); });
         await FetchJsonAsync<List<string>>(http, "/api/foreman/models", ct,
             items => { BrainPool.Clear(); foreach (var m in items) BrainPool.Add(m); });
+        await FetchJsonAsync<DashboardStatsDto>(http, "/api/dashboard/stats", ct, stats =>
+        {
+            UserCount = stats.UserCount;
+            ProfileCount = stats.ProfileCount;
+            ModCount = stats.ModCount;
+            ModPackCount = stats.ModPackCount;
+            GameRequestCount = stats.GameRequestCount;
+            TesterResultCount = stats.TesterResultCount;
+        });
         await FetchHealthAsync(http, ct);
     }
 

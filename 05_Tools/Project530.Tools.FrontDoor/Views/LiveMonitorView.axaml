@@ -36,23 +36,129 @@
                 Background="Transparent" Foreground="{StaticResource FD_TextPrimary}" />
         <Button Content="Brain Pool"
                 Background="Transparent" Foreground="{StaticResource FD_TextPrimary}" />
+        <Button Content="Stats"
+                Background="Transparent" Foreground="{StaticResource FD_TextPrimary}" />
       </StackPanel>
     </Border>
 
-    <!-- Log panel -->
-    <Border Background="{StaticResource FD_BgCard}"
-            CornerRadius="4" Margin="8" Padding="8">
-      <ScrollViewer>
-        <ItemsControl ItemsSource="{Binding LogLines}">
-          <ItemsControl.ItemTemplate>
-            <DataTemplate>
-              <TextBlock Text="{Binding}" FontSize="11" FontFamily="Consolas,Courier New"
-                         Foreground="{StaticResource FD_TextMuted}" />
-            </DataTemplate>
-          </ItemsControl.ItemTemplate>
-        </ItemsControl>
-      </ScrollViewer>
-    </Border>
+    <!-- Content area -->
+    <ScrollViewer>
+      <StackPanel Margin="8" Spacing="16">
+
+        <!-- Live Ops Logs -->
+        <Border Background="{StaticResource FD_BgCard}" CornerRadius="4" Padding="8">
+          <StackPanel>
+            <TextBlock Text="Live Ops" FontWeight="Bold" Foreground="{StaticResource FD_AccentPrimary}" Margin="0,0,0,8" />
+            <ItemsControl ItemsSource="{Binding LogLines}" Height="150">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding}" FontSize="10" FontFamily="Consolas,Courier New"
+                             Foreground="{StaticResource FD_TextMuted}" />
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+
+        <!-- Workforce Roster -->
+        <Border Background="{StaticResource FD_BgCard}" CornerRadius="4" Padding="8">
+          <StackPanel>
+            <TextBlock Text="Workforce" FontWeight="Bold" Foreground="{StaticResource FD_AccentPrimary}" Margin="0,0,0,8" />
+            <ItemsControl ItemsSource="{Binding Roster}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Border Background="{StaticResource FD_BgPanel}" CornerRadius="4" Margin="0,4" Padding="8">
+                    <StackPanel>
+                      <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="{StaticResource FD_TextPrimary}" />
+                      <TextBlock Text="{Binding Role}" FontSize="11" Foreground="{StaticResource FD_TextMuted}" />
+                      <TextBlock FontSize="10" Foreground="{StaticResource FD_AccentMuted}">
+                        <Run Text="Category: " /><Run Text="{Binding Category}" />
+                        <Run Text=" | Status: " /><Run Text="{Binding WorkStreamStatus}" />
+                      </TextBlock>
+                    </StackPanel>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+
+        <!-- Brain Pool -->
+        <Border Background="{StaticResource FD_BgCard}" CornerRadius="4" Padding="8">
+          <StackPanel>
+            <TextBlock Text="Brain Pool (LLM Models)" FontWeight="Bold" Foreground="{StaticResource FD_AccentPrimary}" Margin="0,0,0,8" />
+            <ItemsControl ItemsSource="{Binding BrainPool}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Border Background="{StaticResource FD_BgPanel}" CornerRadius="4" Margin="0,2" Padding="6">
+                    <TextBlock Text="{Binding}" FontSize="11" FontFamily="Consolas,Courier New"
+                               Foreground="{StaticResource FD_TextPrimary}" />
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+
+        <!-- Dashboard Stats -->
+        <Border Background="{StaticResource FD_BgCard}" CornerRadius="4" Padding="8">
+          <StackPanel>
+            <TextBlock Text="Dashboard Statistics" FontWeight="Bold" Foreground="{StaticResource FD_AccentPrimary}" Margin="0,0,0,8" />
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+              <!-- Users -->
+              <Border Background="{StaticResource FD_BgPanel}" CornerRadius="4" Margin="4" Padding="16,12" MinWidth="100">
+                <StackPanel HorizontalAlignment="Center">
+                  <TextBlock Text="{Binding UserCount}" FontSize="24" FontWeight="Bold" 
+                             Foreground="{StaticResource FD_AccentPrimary}" HorizontalAlignment="Center" />
+                  <TextBlock Text="Users" FontSize="11" Foreground="{StaticResource FD_TextMuted}" HorizontalAlignment="Center" />
+                </StackPanel>
+              </Border>
+              <!-- Profiles -->
+              <Border Background="{StaticResource FD_BgPanel}" CornerRadius="4" Margin="4" Padding="16,12" MinWidth="100">
+                <StackPanel HorizontalAlignment="Center">
+                  <TextBlock Text="{Binding ProfileCount}" FontSize="24" FontWeight="Bold" 
+                             Foreground="{StaticResource FD_AccentSuccess}" HorizontalAlignment="Center" />
+                  <TextBlock Text="Profiles" FontSize="11" Foreground="{StaticResource FD_TextMuted}" HorizontalAlignment="Center" />
+                </StackPanel>
+              </Border>
+              <!-- Mods -->
+              <Border Background="{StaticResource FD_BgPanel}" CornerRadius="4" Margin="4" Padding="16,12" MinWidth="100">
+                <StackPanel HorizontalAlignment="Center">
+                  <TextBlock Text="{Binding ModCount}" FontSize="24" FontWeight="Bold" 
+                             Foreground="{StaticResource FD_AccentPrimary}" HorizontalAlignment="Center" />
+                  <TextBlock Text="Mods" FontSize="11" Foreground="{StaticResource FD_TextMuted}" HorizontalAlignment="Center" />
+                </StackPanel>
+              </Border>
+              <!-- Modpacks -->
+              <Border Background="{StaticResource FD_BgPanel}" CornerRadius="4" Margin="4" Padding="16,12" MinWidth="100">
+                <StackPanel HorizontalAlignment="Center">
+                  <TextBlock Text="{Binding ModPackCount}" FontSize="24" FontWeight="Bold" 
+                             Foreground="{StaticResource FD_AccentSuccess}" HorizontalAlignment="Center" />
+                  <TextBlock Text="ModPacks" FontSize="11" Foreground="{StaticResource FD_TextMuted}" HorizontalAlignment="Center" />
+                </StackPanel>
+              </Border>
+              <!-- Game Requests -->
+              <Border Background="{StaticResource FD_BgPanel}" CornerRadius="4" Margin="4" Padding="16,12" MinWidth="100">
+                <StackPanel HorizontalAlignment="Center">
+                  <TextBlock Text="{Binding GameRequestCount}" FontSize="24" FontWeight="Bold" 
+                             Foreground="{StaticResource FD_AccentPrimary}" HorizontalAlignment="Center" />
+                  <TextBlock Text="Game Requests" FontSize="11" Foreground="{StaticResource FD_TextMuted}" HorizontalAlignment="Center" />
+                </StackPanel>
+              </Border>
+              <!-- Tester Results -->
+              <Border Background="{StaticResource FD_BgPanel}" CornerRadius="4" Margin="4" Padding="16,12" MinWidth="100">
+                <StackPanel HorizontalAlignment="Center">
+                  <TextBlock Text="{Binding TesterResultCount}" FontSize="24" FontWeight="Bold" 
+                             Foreground="{StaticResource FD_AccentSuccess}" HorizontalAlignment="Center" />
+                  <TextBlock Text="Tester Results" FontSize="11" Foreground="{StaticResource FD_TextMuted}" HorizontalAlignment="Center" />
+                </StackPanel>
+              </Border>
+            </WrapPanel>
+          </StackPanel>
+        </Border>
+
+      </StackPanel>
+    </ScrollViewer>
 
   </DockPanel>
 
