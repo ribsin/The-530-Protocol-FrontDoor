@@ -41,6 +41,16 @@ public sealed partial class ViewModel_LiveMonitor : ViewModel_Base, IAsyncDispos
     [ObservableProperty] private int _modPackCount = 0;
     [ObservableProperty] private int _gameRequestCount = 0;
     [ObservableProperty] private int _testerResultCount = 0;
+    [ObservableProperty] private int _failedModPackCount = 0;
+    [ObservableProperty] private int _failedModCount = 0;
+
+    // Tab navigation
+    [RelayCommand]
+    private void SelectTab(string tabIndex)
+    {
+        if (int.TryParse(tabIndex, out var index))
+            ActiveTab = index;
+    }
 
     public ObservableCollection<string> LogLines { get; } = new();
     public ObservableCollection<Object_WorkPlanDto> Plans { get; } = new();
@@ -104,6 +114,8 @@ public sealed partial class ViewModel_LiveMonitor : ViewModel_Base, IAsyncDispos
             ModPackCount = stats.ModPackCount;
             GameRequestCount = stats.GameRequestCount;
             TesterResultCount = stats.TesterResultCount;
+            FailedModPackCount = stats.FailedModPackCount;
+            FailedModCount = stats.FailedModCount;
         });
         await FetchHealthAsync(http, ct);
     }

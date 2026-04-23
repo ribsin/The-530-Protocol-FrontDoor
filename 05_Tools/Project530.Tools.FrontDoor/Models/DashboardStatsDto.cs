@@ -18,5 +18,7 @@ public sealed record DashboardStatsDto(
     int ModCount,
     int GameRequestCount,
     int TesterResultCount,
+    int FailedModPackCount,
+    int FailedModCount,
     DateTimeOffset LastUpdated
 );
