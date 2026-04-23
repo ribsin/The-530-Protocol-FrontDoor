@@ -1,6 +1,6 @@
 name: Release Front Door
 # [530-PROVENANCE]
-# AGENT_ID: Cline-Agent003-DesignBay | LAST-MODIFIED: 2026-04-23
+# AGENT_ID: GitHub-Copilot-Claude-Sonnet-4.6 | LAST-MODIFIED: 2026-04-23
 
 on:
   push:
@@ -24,21 +24,27 @@ jobs:
           dotnet-version: 9.0.x
 
       - name: Build Windows x64
-        run: dotnet publish 05_Tools/Project530.Tools.FrontDoor/Project530.Tools.FrontDoor.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./publish/win
+        run: dotnet publish 05_Tools/Project530.Tools.FrontDoor/Project530.Tools.FrontDoor.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/win
 
       - name: Build Linux x64
-        run: dotnet publish 05_Tools/Project530.Tools.FrontDoor/Project530.Tools.FrontDoor.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=false -p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/linux
+        run: dotnet publish 05_Tools/Project530.Tools.FrontDoor/Project530.Tools.FrontDoor.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/linux
 
       - name: Build macOS x64
-        run: dotnet publish 05_Tools/Project530.Tools.FrontDoor/Project530.Tools.FrontDoor.csproj -c Release -r osx-x64 --self-contained true -p:PublishSingleFile=false -p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/mac
+        run: dotnet publish 05_Tools/Project530.Tools.FrontDoor/Project530.Tools.FrontDoor.csproj -c Release -r osx-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o ./publish/mac
+
+      - name: Rename assets with unique platform names
+        run: |
+          cp publish/win/frontdoor.exe publish/frontdoor-win-x64.exe
+          cp publish/linux/frontdoor   publish/frontdoor-linux-x64
+          cp publish/mac/frontdoor     publish/frontdoor-osx-x64
 
       - name: Upload Release Assets
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            publish/win/frontdoor.exe
-            publish/linux/frontdoor
-            publish/mac/frontdoor
+            publish/frontdoor-win-x64.exe
+            publish/frontdoor-linux-x64
+            publish/frontdoor-osx-x64
           generate_release_notes: true
           draft: false
           prerelease: false
