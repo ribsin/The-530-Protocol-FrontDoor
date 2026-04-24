@@ -27,8 +27,10 @@ public sealed partial class ViewModel_SetupWizard : ViewModel_Base
     [ObservableProperty] private bool _hasError = false;
     [ObservableProperty] private string _username = string.Empty;
     [ObservableProperty] private string _password = string.Empty;
-    [ObservableProperty] private string _vaultApiKey = string.Empty;
-    [ObservableProperty] private string _databasePassword = string.Empty;
+    [ObservableProperty] private string _openRouterApiKey = string.Empty;
+    [ObservableProperty] private string _geminiApiKey = string.Empty;
+    [ObservableProperty] private string _groqApiKey = string.Empty;
+    [ObservableProperty] private string _postgresPassword = string.Empty;
     [ObservableProperty] private string _targetDirectory = DefaultTargetDirectory();
 
     public ObservableCollection<string> LogLines { get; } = new();
@@ -51,7 +53,7 @@ public sealed partial class ViewModel_SetupWizard : ViewModel_Base
         LogLines.Clear();
 
         using var credentials = new GitCredentials(Username, Password);
-        var keys = new VaultKeys(VaultApiKey, DatabasePassword);
+        var keys = new VaultKeys(OpenRouterApiKey, GeminiApiKey, GroqApiKey, PostgresPassword);
         var progress = new Progress<InstallProgress>(p =>
         {
             CurrentStep = (int)p.Step;

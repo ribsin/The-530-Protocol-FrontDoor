@@ -44,19 +44,35 @@
         </StackPanel>
       </Border>
 
-      <!-- Vault keys -->
+      <!-- LLM API Keys -->
       <Border Background="{StaticResource FD_BgCard}"
               CornerRadius="6" Padding="16">
         <StackPanel Spacing="10">
-          <TextBlock Text="Vault Keys"
+          <TextBlock Text="LLM API Keys"
                      FontWeight="SemiBold"
                      Foreground="{StaticResource FD_TextPrimary}" />
-          <TextBox Watermark="Vault API key"
-                   Text="{Binding VaultApiKey, Mode=TwoWay}"
+          <TextBox Watermark="OpenRouter API key (sk-or-v1-...)"
+                   Text="{Binding OpenRouterApiKey, Mode=TwoWay}"
                    Foreground="{StaticResource FD_TextPrimary}" />
-          <TextBox Watermark="Database password"
+          <TextBox Watermark="Gemini API key"
+                   Text="{Binding GeminiApiKey, Mode=TwoWay}"
+                   Foreground="{StaticResource FD_TextPrimary}" />
+          <TextBox Watermark="Groq API key (gsk_...)"
+                   Text="{Binding GroqApiKey, Mode=TwoWay}"
+                   Foreground="{StaticResource FD_TextPrimary}" />
+        </StackPanel>
+      </Border>
+
+      <!-- Database Password -->
+      <Border Background="{StaticResource FD_BgCard}"
+              CornerRadius="6" Padding="16">
+        <StackPanel Spacing="10">
+          <TextBlock Text="Database Password"
+                     FontWeight="SemiBold"
+                     Foreground="{StaticResource FD_TextPrimary}" />
+          <TextBox Watermark="PostgreSQL password"
                    PasswordChar="&#x2022;"
-                   Text="{Binding DatabasePassword, Mode=TwoWay}"
+                   Text="{Binding PostgresPassword, Mode=TwoWay}"
                    Foreground="{StaticResource FD_TextPrimary}" />
         </StackPanel>
       </Border>

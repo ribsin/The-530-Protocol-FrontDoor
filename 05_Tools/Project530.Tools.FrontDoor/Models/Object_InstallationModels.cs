@@ -42,4 +42,8 @@ public sealed class GitCredentials : IDisposable
 }
 
 /// <summary>Vault keys for .env.local generation.</summary>
-public sealed record VaultKeys(string VaultApiKey, string DatabasePassword);
+public sealed record VaultKeys(
+    string OpenRouterApiKey,
+    string GeminiApiKey,
+    string GroqApiKey,
+    string PostgresPassword);
