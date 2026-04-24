@@ -44,11 +44,11 @@
         </StackPanel>
       </Border>
 
-      <!-- LLM API Keys -->
+      <!-- LLM API Keys (Primary) -->
       <Border Background="{StaticResource FD_BgCard}"
               CornerRadius="6" Padding="16">
         <StackPanel Spacing="10">
-          <TextBlock Text="LLM API Keys"
+          <TextBlock Text="LLM API Keys (Primary)"
                      FontWeight="SemiBold"
                      Foreground="{StaticResource FD_TextPrimary}" />
           <TextBox Watermark="OpenRouter API key (sk-or-v1-...)"
@@ -59,6 +59,22 @@
                    Foreground="{StaticResource FD_TextPrimary}" />
           <TextBox Watermark="Groq API key (gsk_...)"
                    Text="{Binding GroqApiKey, Mode=TwoWay}"
+                   Foreground="{StaticResource FD_TextPrimary}" />
+        </StackPanel>
+      </Border>
+
+      <!-- LLM API Keys (Backup) -->
+      <Border Background="{StaticResource FD_BgCard}"
+              CornerRadius="6" Padding="16">
+        <StackPanel Spacing="10">
+          <TextBlock Text="LLM API Keys (Backup / Specialty)"
+                     FontWeight="SemiBold"
+                     Foreground="{StaticResource FD_TextPrimary}" />
+          <TextBox Watermark="Together.AI API key"
+                   Text="{Binding TogetherApiKey, Mode=TwoWay}"
+                   Foreground="{StaticResource FD_TextPrimary}" />
+          <TextBox Watermark="DeepSeek API key"
+                   Text="{Binding DeepSeekApiKey, Mode=TwoWay}"
                    Foreground="{StaticResource FD_TextPrimary}" />
         </StackPanel>
       </Border>

@@ -30,6 +30,8 @@ public sealed partial class ViewModel_SetupWizard : ViewModel_Base
     [ObservableProperty] private string _openRouterApiKey = string.Empty;
     [ObservableProperty] private string _geminiApiKey = string.Empty;
     [ObservableProperty] private string _groqApiKey = string.Empty;
+    [ObservableProperty] private string _togetherApiKey = string.Empty;
+    [ObservableProperty] private string _deepSeekApiKey = string.Empty;
     [ObservableProperty] private string _postgresPassword = string.Empty;
     [ObservableProperty] private string _targetDirectory = DefaultTargetDirectory();
 
@@ -53,7 +55,7 @@ public sealed partial class ViewModel_SetupWizard : ViewModel_Base
         LogLines.Clear();
 
         using var credentials = new GitCredentials(Username, Password);
-        var keys = new VaultKeys(OpenRouterApiKey, GeminiApiKey, GroqApiKey, PostgresPassword);
+        var keys = new VaultKeys(OpenRouterApiKey, GeminiApiKey, GroqApiKey, TogetherApiKey, DeepSeekApiKey, PostgresPassword);
         var progress = new Progress<InstallProgress>(p =>
         {
             CurrentStep = (int)p.Step;

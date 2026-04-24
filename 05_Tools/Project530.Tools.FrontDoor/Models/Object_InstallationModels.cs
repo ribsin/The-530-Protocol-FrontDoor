@@ -46,4 +46,6 @@ public sealed record VaultKeys(
     string OpenRouterApiKey,
     string GeminiApiKey,
     string GroqApiKey,
+    string TogetherApiKey,
+    string DeepSeekApiKey,
     string PostgresPassword);
