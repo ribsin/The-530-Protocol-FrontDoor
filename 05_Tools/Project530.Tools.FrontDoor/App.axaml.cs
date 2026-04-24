@@ -9,6 +9,7 @@
  * *************************************************************************** */
 
 using System.Runtime.InteropServices;
+using Avalonia.Controls;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -79,6 +80,25 @@ public sealed class App : Application
                     Logger.Info("MainWindow created, assigning to desktop...");
                     desktop.MainWindow = mainWindow;
                     Logger.Info("MainWindow assigned to desktop");
+                    
+                    // M67: Force window to show and activate
+                    Logger.Info("Showing window...");
+                    mainWindow.Show();
+                    Logger.Info("Activating window...");
+                    mainWindow.Activate();
+                    Logger.Info($"Window state: {mainWindow.WindowState}");
+                    Logger.Info($"Window position: {mainWindow.Position}");
+                    
+                    // Fallback: ensure window is visible
+                    if (mainWindow.WindowState == WindowState.Minimized)
+                    {
+                        Logger.Info("Window was minimized — restoring...");
+                        mainWindow.WindowState = WindowState.Normal;
+                    }
+                    
+                    // Ensure window is on screen
+                    mainWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                    Logger.Info("Set window startup location to CenterScreen");
                 }
             }
             catch (OperationCanceledException)
