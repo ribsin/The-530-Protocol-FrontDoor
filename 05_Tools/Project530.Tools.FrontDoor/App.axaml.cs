@@ -56,19 +56,29 @@ public sealed class App : Application
                 {
                     // Factory is running - show Live Monitor
                     Logger.Info("Showing Live Monitor (factory healthy)");
-                    desktop.MainWindow = new MainWindow
+                    var liveMonitor = new MainWindow
                     {
                         DataContext = Services.GetRequiredService<ViewModel_LiveMonitor>()
                     };
+                    Logger.Info("Live Monitor window created");
+                    desktop.MainWindow = liveMonitor;
+                    Logger.Info("Live Monitor window assigned to desktop");
                 }
                 else
                 {
                     // Not installed or needs config - show Setup Wizard
                     Logger.Info("Showing Setup Wizard (factory not ready)");
-                    desktop.MainWindow = new MainWindow
+                    Logger.Info("Resolving ViewModel_SetupWizard from DI...");
+                    var wizardVm = Services.GetRequiredService<ViewModel_SetupWizard>();
+                    Logger.Info($"ViewModel resolved: {wizardVm?.GetType().Name ?? "null"}");
+                    Logger.Info("Creating MainWindow...");
+                    var mainWindow = new MainWindow
                     {
-                        DataContext = Services.GetRequiredService<ViewModel_SetupWizard>()
+                        DataContext = wizardVm
                     };
+                    Logger.Info("MainWindow created, assigning to desktop...");
+                    desktop.MainWindow = mainWindow;
+                    Logger.Info("MainWindow assigned to desktop");
                 }
             }
             catch (OperationCanceledException)
