@@ -2,12 +2,13 @@
 /* ***************************************************************************
  * PROJECT: 5:30 Protocol | COMPLIANCE: 2026.AI-ACT.ARTICLE-50
  * PROVENANCE: AI-GENERATED
- * AGENT_ID: GitHub-Copilot-Claude-Sonnet-4.6 | AUTHOR_ID: Five30-Protocol-Team
- * LAST_MODIFIED: 2026-04-24 | SESSION: M48-Phase3-FrontDoor
+ * AGENT_ID: Cline-Agent003-DesignBay | AUTHOR_ID: Five30-Protocol-Team
+ * LAST_MODIFIED: 2026-04-24 | SESSION: M63-FrontDoor-Fix
  * SECURITY_STATUS: STEEL-CHECK-PASSED
  * DOCUMENT: Front Door — App.axaml.cs
  * *************************************************************************** */
 
+using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -21,33 +22,67 @@ namespace Project530.Tools.FrontDoor;
 public sealed class App : Application
 {
     public static IServiceProvider Services { get; private set; } = null!;
+    public static Service_StartupLogger Logger { get; private set; } = null!;
 
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
     }
 
-    public override void OnFrameworkInitializationCompleted()
+    public override async void OnFrameworkInitializationCompleted()
     {
+        // M63: Initialize logger first for diagnostics
+        Logger = new Service_StartupLogger();
+        Logger.Info("=== Five30 FrontDoor Starting ===");
+        Logger.Info($"Platform: {RuntimeInformation.OSDescription}");
+        Logger.Info($"Runtime: {RuntimeInformation.FrameworkDescription}");
+        
         Services = BuildServices();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            // M62: Auto-detect existing installation
+            // M63: Async detection with timeout to prevent UI freeze
             var detector = Services.GetRequiredService<Service_InstallationDetector>();
-            var result = detector.DetectAsync().GetAwaiter().GetResult();
+            Logger.Info("Starting installation detection...");
             
-            if (result.IsInstalled && result.IsHealthy)
+            try
             {
-                // Factory is running - show Live Monitor
+                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+                var result = await Task.Run(() => detector.DetectAsync(cts.Token), cts.Token);
+                
+                Logger.Info($"Detection complete: IsInstalled={result.IsInstalled}, IsHealthy={result.IsHealthy}, Path={result.RepoPath}");
+                
+                if (result.IsInstalled && result.IsHealthy)
+                {
+                    // Factory is running - show Live Monitor
+                    Logger.Info("Showing Live Monitor (factory healthy)");
+                    desktop.MainWindow = new MainWindow
+                    {
+                        DataContext = Services.GetRequiredService<ViewModel_LiveMonitor>()
+                    };
+                }
+                else
+                {
+                    // Not installed or needs config - show Setup Wizard
+                    Logger.Info("Showing Setup Wizard (factory not ready)");
+                    desktop.MainWindow = new MainWindow
+                    {
+                        DataContext = Services.GetRequiredService<ViewModel_SetupWizard>()
+                    };
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                Logger.Warn("Detection timed out after 5 seconds - showing Setup Wizard");
                 desktop.MainWindow = new MainWindow
                 {
-                    DataContext = Services.GetRequiredService<ViewModel_LiveMonitor>()
+                    DataContext = Services.GetRequiredService<ViewModel_SetupWizard>()
                 };
             }
-            else
+            catch (Exception ex)
             {
-                // Not installed or needs config - show Setup Wizard
+                Logger.Error("Detection failed", ex);
+                Logger.Info("Showing Setup Wizard (detection error)");
                 desktop.MainWindow = new MainWindow
                 {
                     DataContext = Services.GetRequiredService<ViewModel_SetupWizard>()
@@ -55,6 +90,7 @@ public sealed class App : Application
             }
         }
 
+        Logger.Info($"=== FrontDoor Ready | Log: {Logger.GetLogPath()} ===");
         base.OnFrameworkInitializationCompleted();
     }
 
