@@ -17,6 +17,9 @@
     <SolidColorBrush x:Key="FD_AccentSuccess" Color="#22c55e"/>
     <SolidColorBrush x:Key="FD_AccentWarning" Color="#f59e0b"/>
     <SolidColorBrush x:Key="FD_AccentDanger"  Color="#ef4444"/>
+    <SolidColorBrush x:Key="FD_AccentAlert"   Color="#ef4444"/>
+    <SolidColorBrush x:Key="FD_BgAlert"       Color="#2d1515"/>
+    <SolidColorBrush x:Key="FD_AccentMuted"    Color="#4a5568"/>
     <SolidColorBrush x:Key="FD_TextPrimary"   Color="#e2e8f0"/>
     <SolidColorBrush x:Key="FD_TextMuted"     Color="#64748b"/>
     <SolidColorBrush x:Key="FD_Border"        Color="#1e2d47"/>

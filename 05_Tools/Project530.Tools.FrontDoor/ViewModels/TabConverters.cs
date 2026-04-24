@@ -3,7 +3,7 @@
  * PROJECT: 5:30 Protocol | COMPLIANCE: 2026.AI-ACT.ARTICLE-50
  * PROVENANCE: AI-GENERATED
  * AGENT_ID: Cline-Agent003-DesignBay | AUTHOR_ID: Five30-Protocol-Team
- * LAST_MODIFIED: 2026-04-23 | SESSION: M50-TabUI
+ * LAST_MODIFIED: 2026-04-24 | SESSION: M50-FrontDoor-Fixes
  * SECURITY_STATUS: STEEL-CHECK-PASSED
  * DOCUMENT: Tab Converter Classes
  * *************************************************************************** */
@@ -21,20 +21,24 @@ public static class TabConverters
     public const int LiveOpsTab = 1;
     public const int WorkforceTab = 2;
     public const int BrainPoolTab = 3;
+    public const int AiAgentsTab = 4;
 
     // IsVisible converters
     public static readonly FuncValueConverter<int, bool> IsStats = new(t => t == StatsTab);
     public static readonly FuncValueConverter<int, bool> IsLiveOps = new(t => t == LiveOpsTab);
     public static readonly FuncValueConverter<int, bool> IsWorkforce = new(t => t == WorkforceTab);
     public static readonly FuncValueConverter<int, bool> IsBrainPool = new(t => t == BrainPoolTab);
+    public static readonly FuncValueConverter<int, bool> IsAiAgents = new(t => t == AiAgentsTab);
 
     // Button background converter (highlight active tab)
-    public static readonly FuncValueConverter<int, IBrush> Stats = new(t => 
+    public static readonly FuncValueConverter<int, IBrush> Stats = new(t =>
         t == StatsTab ? new SolidColorBrush(Color.Parse("#2D7DD2")) : Brushes.Transparent);
-    public static readonly FuncValueConverter<int, IBrush> LiveOps = new(t => 
+    public static readonly FuncValueConverter<int, IBrush> LiveOps = new(t =>
         t == LiveOpsTab ? new SolidColorBrush(Color.Parse("#2D7DD2")) : Brushes.Transparent);
-    public static readonly FuncValueConverter<int, IBrush> Workforce = new(t => 
+    public static readonly FuncValueConverter<int, IBrush> Workforce = new(t =>
         t == WorkforceTab ? new SolidColorBrush(Color.Parse("#2D7DD2")) : Brushes.Transparent);
-    public static readonly FuncValueConverter<int, IBrush> BrainPool = new(t => 
+    public static readonly FuncValueConverter<int, IBrush> BrainPool = new(t =>
         t == BrainPoolTab ? new SolidColorBrush(Color.Parse("#2D7DD2")) : Brushes.Transparent);
+    public static readonly FuncValueConverter<int, IBrush> AiAgents = new(t =>
+        t == AiAgentsTab ? new SolidColorBrush(Color.Parse("#2D7DD2")) : Brushes.Transparent);
 }
