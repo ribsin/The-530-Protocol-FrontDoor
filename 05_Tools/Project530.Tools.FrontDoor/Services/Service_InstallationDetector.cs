@@ -24,8 +24,8 @@ public sealed class Service_InstallationDetector
     private static readonly string[] KnownPaths = new[]
     {
         "/home/ribsin/The-530-Protocol",
-        "/home/ribsin/project530/The-530-Protocol",
-        "/opt/project530/The-530-Protocol",
+        "/home/ribsin/project530",
+        "/opt/project530",
         "/root/The-530-Protocol"
     };
 

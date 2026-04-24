@@ -18,10 +18,16 @@ public sealed partial class MainWindow : Window
 {
     public MainWindow()
     {
+        App.Logger?.Info("MainWindow: Starting InitializeComponent...");
         InitializeComponent();
+        App.Logger?.Info("MainWindow: InitializeComponent complete");
+        
+        App.Logger?.Info("MainWindow: Resolving ViewModel_SetupWizard...");
         var wizard = App.Services.GetRequiredService<ViewModel_SetupWizard>();
+        App.Logger?.Info("MainWindow: ViewModel resolved, attaching event handler...");
         wizard.InstallationComplete += OnInstallationComplete;
         WizardView.DataContext = wizard;
+        App.Logger?.Info("MainWindow: WizardView DataContext set");
     }
 
     private void OnInstallationComplete(object? sender, EventArgs e)
