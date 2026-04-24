@@ -50,27 +50,44 @@ public sealed class Service_FactoryInstaller : I_FactoryInstaller
         if (!depResult.IsSuccess)
             return Result<InstallationReport>.Fail(depResult.ErrorMessage!);
 
-        // Step 2: Git auth validated upstream in wizard; proceed to .env.local
-        progress.Report(new InstallProgress(InstallStep.VaultKeys, "Generating .env.local…", 25));
-        var repoPath = Path.Combine(targetDirectory, "The-530-Protocol");
+        // Step 2: Find or determine repo path
+        // M62: Check multiple possible installation locations
+        var repoPath = await FindRepoPathAsync(targetDirectory);
+        
+        // Step 3: Git clone if not exists
+        if (!Directory.Exists(repoPath))
+        {
+            progress.Report(new InstallProgress(InstallStep.Clone, $"Cloning {Branch} branch…", 35));
+            var cloneResult = await CloneRepositoryAsync(credentials, targetDirectory, progress, ct);
+            if (!cloneResult.IsSuccess)
+                return Result<InstallationReport>.Fail(cloneResult.ErrorMessage!);
+        }
+        else
+        {
+            progress.Report(new InstallProgress(InstallStep.Clone, $"Using existing installation at {repoPath}…", 35));
+        }
+
+        // Step 4: Write .env.local (in correct location)
+        progress.Report(new InstallProgress(InstallStep.VaultKeys, "Generating .env.local…", 50));
         var envResult = await GenerateEnvLocalAsync(repoPath, vaultKeys);
         if (!envResult.IsSuccess)
             return Result<InstallationReport>.Fail(envResult.ErrorMessage!);
 
-        // Step 3: Git clone
-        progress.Report(new InstallProgress(InstallStep.Clone, $"Cloning {Branch} branch…", 35));
-        var cloneResult = await CloneRepositoryAsync(credentials, targetDirectory, progress, ct);
-        if (!cloneResult.IsSuccess)
-            return Result<InstallationReport>.Fail(cloneResult.ErrorMessage!);
-
-        // Step 4: Write .env.local into the cloned repo
-        await GenerateEnvLocalAsync(repoPath, vaultKeys);
-
-        // Step 5: Docker Compose up
-        progress.Report(new InstallProgress(InstallStep.DockerUp, "Starting Docker Compose stack…", 65));
-        var dockerResult = await DockerComposeUpAsync(repoPath, progress, ct);
-        if (!dockerResult.IsSuccess)
-            return Result<InstallationReport>.Fail(dockerResult.ErrorMessage!);
+        // Step 5: Docker Compose up (if not running)
+        var containersRunning = await CheckContainersAsync(repoPath, ct);
+        if (!containersRunning)
+        {
+            progress.Report(new InstallProgress(InstallStep.DockerUp, "Starting Docker Compose stack…", 65));
+            var dockerResult = await DockerComposeUpAsync(repoPath, progress, ct);
+            if (!dockerResult.IsSuccess)
+                return Result<InstallationReport>.Fail(dockerResult.ErrorMessage!);
+        }
+        else
+        {
+            progress.Report(new InstallProgress(InstallStep.DockerUp, "Containers already running…", 65));
+            // Restart to pick up new .env.local
+            await DockerComposeRestartAsync(repoPath, progress, ct);
+        }
 
         // Step 6: Health poll
         progress.Report(new InstallProgress(InstallStep.HealthCheck, "Waiting for factory to come online…", 80));
@@ -85,6 +102,29 @@ public sealed class Service_FactoryInstaller : I_FactoryInstaller
 
         progress.Report(new InstallProgress(InstallStep.HealthCheck, "Factory is online.", 100));
         return Result<InstallationReport>.Ok(new InstallationReport(repoPath, BackendHealthUrl, DateTimeOffset.UtcNow));
+    }
+    
+    private Task<string> FindRepoPathAsync(string targetDirectory)
+    {
+        // M62: Check known installation paths first
+        var knownPaths = new[]
+        {
+            "/home/ribsin/The-530-Protocol",
+            "/opt/project530/The-530-Protocol"
+        };
+        
+        foreach (var path in knownPaths)
+        {
+#pragma warning disable RS0030
+            if (File.Exists(Path.Combine(path, "docker-compose.yml")))
+#pragma warning restore RS0030
+            {
+                return Task.FromResult(path);
+            }
+        }
+        
+        // Default to target directory path
+        return Task.FromResult(Path.Combine(targetDirectory, "The-530-Protocol"));
     }
 
     private static async Task<Result<bool>> CheckDependenciesAsync()
@@ -141,6 +181,36 @@ public sealed class Service_FactoryInstaller : I_FactoryInstaller
             progress.Report(new InstallProgress(InstallStep.DockerUp, line, 70));
         }
         return Result<bool>.Ok(true);
+    }
+    
+    private async Task<Result<bool>> DockerComposeRestartAsync(
+        string repoPath,
+        IProgress<InstallProgress> progress,
+        CancellationToken ct)
+    {
+        // Restart backend to pick up new .env.local
+        await foreach (var line in _runner.RunAsync("docker", "compose restart backend", repoPath, ct))
+        {
+            progress.Report(new InstallProgress(InstallStep.DockerUp, line, 75));
+        }
+        return Result<bool>.Ok(true);
+    }
+    
+    private async Task<bool> CheckContainersAsync(string repoPath, CancellationToken ct)
+    {
+        try
+        {
+            var checkDone = false;
+            await foreach (var _ in _runner.RunAsync("docker", "compose ps -q", repoPath, ct))
+            {
+                checkDone = true;
+            }
+            return checkDone;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     private async Task<Result<bool>> WaitForHealthyAsync(

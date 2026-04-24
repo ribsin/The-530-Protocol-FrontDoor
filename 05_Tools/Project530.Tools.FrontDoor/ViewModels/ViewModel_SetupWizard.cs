@@ -83,7 +83,7 @@ public sealed partial class ViewModel_SetupWizard : ViewModel_Base
     private static string DefaultTargetDirectory()
     {
         return Environment.OSVersion.Platform == PlatformID.Unix
-            ? "$HOME/project530"
+            ? "/home/ribsin/project530"
             : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "project530");
     }
 }

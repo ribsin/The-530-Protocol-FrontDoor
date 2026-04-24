@@ -33,10 +33,26 @@ public sealed class App : Application
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow
+            // M62: Auto-detect existing installation
+            var detector = Services.GetRequiredService<Service_InstallationDetector>();
+            var result = detector.DetectAsync().GetAwaiter().GetResult();
+            
+            if (result.IsInstalled && result.IsHealthy)
             {
-                DataContext = Services.GetRequiredService<ViewModel_SetupWizard>()
-            };
+                // Factory is running - show Live Monitor
+                desktop.MainWindow = new MainWindow
+                {
+                    DataContext = Services.GetRequiredService<ViewModel_LiveMonitor>()
+                };
+            }
+            else
+            {
+                // Not installed or needs config - show Setup Wizard
+                desktop.MainWindow = new MainWindow
+                {
+                    DataContext = Services.GetRequiredService<ViewModel_SetupWizard>()
+                };
+            }
         }
 
         base.OnFrameworkInitializationCompleted();
@@ -48,6 +64,7 @@ public sealed class App : Application
         var runner = new Service_ProcessRunner();
         var poller = new Service_BackendHealthPoller();
         var installer = new Service_FactoryInstaller(runner, poller, vault);
+        var detector = new Service_InstallationDetector();
 
         var services = new ServiceCollection();
         services.AddSingleton<I_GitCredentialVault>(vault);
@@ -55,6 +72,7 @@ public sealed class App : Application
         services.AddSingleton<I_ProcessRunner>(runner);
         services.AddSingleton<I_BackendHealthPoller>(poller);
         services.AddSingleton<I_FactoryInstaller>(installer);
+        services.AddSingleton<Service_InstallationDetector>(detector);
         services.AddTransient<ViewModel_SetupWizard>();
         services.AddTransient<ViewModel_LiveMonitor>(sp =>
             new ViewModel_LiveMonitor("http://localhost:5000"));
