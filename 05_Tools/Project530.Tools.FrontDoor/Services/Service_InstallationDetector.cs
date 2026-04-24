@@ -21,9 +21,12 @@ namespace Project530.Tools.FrontDoor.Services;
 public sealed class Service_InstallationDetector
 {
     // Known installation paths (ordered by likelihood)
+    // M71: Added /opt/project530/The-530-Protocol (actual deployed path on ribsin@530PROTOCOL)
     private static readonly string[] KnownPaths = new[]
     {
+        "/opt/project530/The-530-Protocol",
         "/home/ribsin/The-530-Protocol",
+        "/home/ribsin/project530/The-530-Protocol",
         "/home/ribsin/project530",
         "/opt/project530",
         "/root/The-530-Protocol"

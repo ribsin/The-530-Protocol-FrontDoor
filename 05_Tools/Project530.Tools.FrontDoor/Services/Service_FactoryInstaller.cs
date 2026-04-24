@@ -157,6 +157,11 @@ public sealed class Service_FactoryInstaller : I_FactoryInstaller
         IProgress<InstallProgress> progress,
         CancellationToken ct)
     {
+        // M71: Ensure parent directory exists before git clone uses it as CWD.
+        // ENOENT crash fix: /home/ribsin/project530 didn't exist when git tried to use it.
+#pragma warning disable RS0030
+        Directory.CreateDirectory(targetDirectory);
+#pragma warning restore RS0030
         var authedUrl = RepoUrl.Replace("https://", $"https://{credentials.Username}:{credentials.Password}@");
         var args = $"clone --branch {Branch} --depth 1 {authedUrl} The-530-Protocol";
         await foreach (var line in _runner.RunAsync("git", args, targetDirectory, ct))
