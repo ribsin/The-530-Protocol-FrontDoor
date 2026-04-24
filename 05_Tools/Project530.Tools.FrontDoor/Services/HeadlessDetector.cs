@@ -22,8 +22,10 @@ public static class HeadlessDetector
     /// </summary>
     public static bool IsHeadlessEnvironment()
     {
-        // SSH session — always headless
-        if (Environment.GetEnvironmentVariable("SSH_CONNECTION") != null)
+        // SSH session with NO display — headless
+        // (Allow SSH + X11 forwarding if DISPLAY is set)
+        if (Environment.GetEnvironmentVariable("SSH_CONNECTION") != null
+            && Environment.GetEnvironmentVariable("DISPLAY") == null)
             return true;
 
         // tmux / GNU screen session — typically headless
@@ -33,7 +35,8 @@ public static class HeadlessDetector
 
         // No DISPLAY set on Linux / macOS → no X11 or Wayland
         if (!OperatingSystem.IsWindows()
-            && Environment.GetEnvironmentVariable("DISPLAY") == null)
+            && Environment.GetEnvironmentVariable("DISPLAY") == null
+            && Environment.GetEnvironmentVariable("WAYLAND_DISPLAY") == null)
             return true;
 
         // WSL without a forwarded display
@@ -42,5 +45,19 @@ public static class HeadlessDetector
             return true;
 
         return false;
+    }
+
+    /// <summary>
+    /// Returns display environment info for logging/debugging.
+    /// </summary>
+    public static string GetDisplayInfo()
+    {
+        var lines = new List<string>();
+        lines.Add($"  DISPLAY:         {Environment.GetEnvironmentVariable("DISPLAY") ?? "(not set)"}");
+        lines.Add($"  WAYLAND_DISPLAY: {Environment.GetEnvironmentVariable("WAYLAND_DISPLAY") ?? "(not set)"}");
+        lines.Add($"  XDG_SESSION_TYPE: {Environment.GetEnvironmentVariable("XDG_SESSION_TYPE") ?? "(not set)"}");
+        lines.Add($"  SSH_CONNECTION:  {Environment.GetEnvironmentVariable("SSH_CONNECTION") ?? "(not set)"}");
+        lines.Add($"  TMUX:            {(Environment.GetEnvironmentVariable("TMUX") != null ? "(set)" : "(not set)")}");
+        return string.Join(Environment.NewLine, lines);
     }
 }

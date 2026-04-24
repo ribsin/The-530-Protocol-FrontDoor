@@ -39,6 +39,11 @@ bool headlessFlag = Array.Exists(args, a =>
     string.Equals(a, "--headless", StringComparison.OrdinalIgnoreCase) ||
     string.Equals(a, "-s", StringComparison.OrdinalIgnoreCase));
 
+// M66: Log display environment info for debugging
+Console.WriteLine("[Five30] Display environment:");
+Console.WriteLine(HeadlessDetector.GetDisplayInfo());
+Console.WriteLine();
+
 bool autoHeadless = !forceGui && HeadlessDetector.IsHeadlessEnvironment();
 
 if (headlessFlag || autoHeadless)
