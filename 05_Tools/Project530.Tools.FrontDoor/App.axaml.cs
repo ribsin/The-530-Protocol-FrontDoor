@@ -142,8 +142,6 @@ public sealed class App : Application
         services.AddTransient<ViewModel_SetupWizard>();
         services.AddTransient<ViewModel_LiveMonitor>(sp =>
             new ViewModel_LiveMonitor("http://localhost:5000"));
-        services.AddTransient<ViewModel_Settings>(sp =>
-            new ViewModel_Settings(vault, vault));
         return services.BuildServiceProvider();
     }
 }
